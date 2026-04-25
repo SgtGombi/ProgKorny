@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:18.2
+    container_name: progkorny-pg
+    restart: always
+    environment:
+      POSTGRES_DB: beadando
+      POSTGRES_USER: beadando
+      POSTGRES_PASSWORD: beadando
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:
