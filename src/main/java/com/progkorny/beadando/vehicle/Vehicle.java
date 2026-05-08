@@ -2,8 +2,6 @@ package com.progkorny.beadando.vehicle;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,9 +21,8 @@ public class Vehicle {
     @Column(name = "plate_number", nullable = false, length = 15)
     private String plateNumber;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
-    private VehicleType type;
+    private String type;
 
     @Column(name = "img_url", length = 255)
     private String imgUrl;
@@ -39,13 +36,11 @@ public class Vehicle {
     @Column(nullable = false, length = 40)
     private String color;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 12)
-    private FuelType fuel;
+    private String fuel;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "condition_status", nullable = false, length = 15)
-    private ConditionStatus conditionStatus;
+    private String conditionStatus;
 
     @Column(nullable = false)
     private Integer status;
@@ -77,11 +72,11 @@ public class Vehicle {
         this.plateNumber = plateNumber;
     }
 
-    public VehicleType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(VehicleType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -117,19 +112,19 @@ public class Vehicle {
         this.color = color;
     }
 
-    public FuelType getFuel() {
+    public String getFuel() {
         return fuel;
     }
 
-    public void setFuel(FuelType fuel) {
+    public void setFuel(String fuel) {
         this.fuel = fuel;
     }
 
-    public ConditionStatus getConditionStatus() {
+    public String getConditionStatus() {
         return conditionStatus;
     }
 
-    public void setConditionStatus(ConditionStatus conditionStatus) {
+    public void setConditionStatus(String conditionStatus) {
         this.conditionStatus = conditionStatus;
     }
 
