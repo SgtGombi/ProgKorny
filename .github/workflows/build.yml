@@ -1,0 +1,44 @@
+name: build
+
+on:
+  push:
+    branches: [ "gombi" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      artifactory:
+        image: releases-docker.jfrog.io/jfrog/artifactory-oss:latest
+        ports:
+          - 8081:8081
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Wait for Artifactory
+        run: sleep 90
+
+      - name: Create Maven settings
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml <<EOF
+          <settings>
+            <servers>
+              <server>
+                <id>artifactory</id>
+                <username>gombi</username>
+                <password>jelszo</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+
+      - name: Build & Deploy
+        run: mvn -B deploy
