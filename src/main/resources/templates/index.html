@@ -230,8 +230,7 @@
         }
 
         .card {
-            display: grid;
-            grid-template-columns: 240px 1fr;
+            display: flex;
             gap: 16px;
             background: var(--card);
             border-radius: 18px;
@@ -240,15 +239,26 @@
             box-shadow: 0 12px 24px rgba(31, 41, 51, 0.08);
         }
 
+        .card-media {
+            flex: 0 0 260px;
+            align-self: stretch;
+            overflow: hidden;
+            background: #f0f0f0;
+        }
+
         .card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            background: #f0f0f0;
+            object-position: center;
+            display: block;
         }
 
         .card-body {
             padding: 16px;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 220px;
+            gap: 16px;
         }
 
         .card-title {
@@ -275,6 +285,26 @@
             color: #3f4a56;
         }
 
+        .extras {
+            border-left: 1px solid var(--border);
+            padding-left: 16px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .extras strong {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .extras ul {
+            margin: 0;
+            padding-left: 18px;
+            display: grid;
+            gap: 6px;
+        }
+
         .empty {
             text-align: center;
             padding: 40px 16px;
@@ -288,7 +318,24 @@
             }
 
             .card {
+                flex-direction: column;
+            }
+
+            .card-media {
+                width: 100%;
+                height: 220px;
+                flex: 0 0 auto;
+            }
+
+            .card-body {
                 grid-template-columns: 1fr;
+            }
+
+            .extras {
+                border-left: none;
+                border-top: 1px solid var(--border);
+                padding-left: 0;
+                padding-top: 12px;
             }
 
             .filter {
@@ -306,7 +353,7 @@
     <div class="nav-inner">
         <div class="brand">
             <i class="fa-solid fa-car-side"></i>
-            <span>Használtautó.hu</span>
+            <span>Használtautó</span>
         </div>
     </div>
 </nav>
@@ -376,18 +423,28 @@
 
     <div class="cards" th:if="${!#lists.isEmpty(vehicles)}">
         <div class="card" th:each="vehicle : ${vehicles}">
-            <img th:src="${vehicle.imgUrl}" alt="Auto" />
+            <div class="card-media">
+                <img th:src="${vehicle.imgUrl}" alt="Auto" />
+            </div>
             <div class="card-body">
-                <h2 class="card-title" th:text="${vehicle.name}">Jarmu neve</h2>
-                <div class="meta">
-                    <span><i class="fa-solid fa-tag"></i> Típus: <strong th:text="${vehicle.type}">GK</strong></span>
-                    <span><i class="fa-solid fa-calendar"></i> Évjárat: <strong th:text="${vehicle.yearOfManufacture}">2018</strong></span>
-                    <span><i class="fa-solid fa-gauge-high"></i> Km: <strong th:text="${vehicle.km}">120000</strong></span>
-                    <span><i class="fa-solid fa-gas-pump"></i> Üzemanyag: <strong th:text="${vehicle.fuel}">dízel</strong></span>
-                    <span><i class="fa-solid fa-palette"></i> Szín: <strong th:text="${vehicle.color}">fekete</strong></span>
-                    <span><i class="fa-solid fa-wrench"></i> Állapot: <strong th:text="${vehicle.conditionStatus}">használt</strong></span>
+                <div>
+                    <h2 class="card-title" th:text="${vehicle.name}">Jarmu neve</h2>
+                    <div class="meta">
+                        <span><i class="fa-solid fa-tag"></i> Típus: <strong th:text="${vehicle.type}">GK</strong></span>
+                        <span><i class="fa-solid fa-calendar"></i> Évjárat: <strong th:text="${vehicle.yearOfManufacture}">2018</strong></span>
+                        <span><i class="fa-solid fa-gauge-high"></i> Km: <strong th:text="${vehicle.km}">120000</strong></span>
+                        <span><i class="fa-solid fa-gas-pump"></i> Üzemanyag: <strong th:text="${vehicle.fuel}">dízel</strong></span>
+                        <span><i class="fa-solid fa-palette"></i> Szín: <strong th:text="${vehicle.color}">fekete</strong></span>
+                        <span><i class="fa-solid fa-wrench"></i> Állapot: <strong th:text="${vehicle.conditionStatus}">használt</strong></span>
+                    </div>
+                    <p class="description" th:text="${vehicle.description}">Leírás</p>
                 </div>
-                <p class="description" th:text="${vehicle.description}">Leírás</p>
+                <div class="extras" th:if="${!#lists.isEmpty(vehicle.features)}">
+                    <strong>Extrák</strong>
+                    <ul>
+                        <li th:each="feature : ${vehicle.features}" th:text="${feature.name}">Extrák</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

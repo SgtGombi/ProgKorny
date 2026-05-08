@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Extra szerkesztés</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #f4f6f8;
+            --card: #ffffff;
+            --accent: #e60000;
+            --text: #19202a;
+            --muted: #667085;
+            --border: #e3e8ef;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 24px auto 40px;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 24px rgba(31, 41, 51, 0.06);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn.secondary {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1 th:text="${feature.id == null ? 'Új extra' : 'Extra szerkesztése'}">Extra</h1>
+        <form method="post" action="/dashboard/features/save" th:object="${feature}">
+            <input type="hidden" th:field="*{id}" />
+            <div>
+                <label>Megnevezés</label>
+                <input type="text" th:field="*{name}" required />
+            </div>
+            <div class="actions">
+                <button class="btn" type="submit">Mentés</button>
+                <a class="btn secondary" href="/dashboard">Mégse</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

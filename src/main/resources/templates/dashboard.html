@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard - Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        :root {
+            --bg: #f4f6f8;
+            --card: #ffffff;
+            --accent: #e60000;
+            --text: #19202a;
+            --muted: #667085;
+            --border: #e3e8ef;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Roboto", "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header a {
+            text-decoration: none;
+            color: var(--muted);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 24px auto 40px;
+            padding: 0 20px;
+            display: grid;
+            gap: 24px;
+        }
+
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 10px 24px rgba(31, 41, 51, 0.06);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .panel-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .link-btn {
+            border: 1px solid var(--border);
+            padding: 6px 10px;
+            border-radius: 10px;
+            background: white;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .danger {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            font-size: 12px;
+            color: var(--text);
+        }
+
+        @media (max-width: 720px) {
+            .actions {
+                flex-direction: column;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <h1><i class="fa-solid fa-gauge"></i> Admin dashboard</h1>
+    <a href="/">Vissza a listához</a>
+</header>
+
+<main class="container">
+    <section class="panel">
+        <div class="panel-header">
+            <h2>Járművek</h2>
+            <a class="btn" href="/dashboard/vehicles/new"><i class="fa-solid fa-plus"></i> Új jármű</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Név</th>
+                    <th>Márka</th>
+                    <th>Évjárat</th>
+                    <th>Ár</th>
+                    <th>Állapot</th>
+                    <th>Extrák</th>
+                    <th>Műveletek</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="vehicle : ${vehicles}">
+                    <td th:text="${vehicle.name}">Név</td>
+                    <td th:text="${vehicle.brand}">Márka</td>
+                    <td th:text="${vehicle.yearOfManufacture}">2018</td>
+                    <td th:text="${vehicle.price}">4200000</td>
+                    <td th:text="${vehicle.conditionStatus}">használt</td>
+                    <td>
+                        <div class="badges">
+                            <span class="badge" th:each="feature : ${vehicle.features}" th:text="${feature.name}">ABS</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <a class="link-btn" th:href="@{/dashboard/vehicles/{id}/edit(id=${vehicle.id})}">Szerkesztés</a>
+                            <form th:action="@{/dashboard/vehicles/{id}/delete(id=${vehicle.id})}" method="post">
+                                <button class="link-btn danger" type="submit">Törlés</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="panel">
+        <div class="panel-header">
+            <h2>Extrák</h2>
+            <a class="btn" href="/dashboard/features/new"><i class="fa-solid fa-plus"></i> Új extra</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Megnevezés</th>
+                    <th>Műveletek</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="feature : ${features}">
+                    <td th:text="${feature.name}">Klíma</td>
+                    <td>
+                        <div class="actions">
+                            <a class="link-btn" th:href="@{/dashboard/features/{id}/edit(id=${feature.id})}">Szerkesztés</a>
+                            <form th:action="@{/dashboard/features/{id}/delete(id=${feature.id})}" method="post">
+                                <button class="link-btn danger" type="submit">Törlés</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

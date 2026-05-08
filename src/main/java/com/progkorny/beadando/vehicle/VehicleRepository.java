@@ -12,8 +12,9 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 	List<Vehicle> findByStatusAndNameContainingIgnoreCase(Integer status, String name);
 
 	@Query("""
-			select v
+			select distinct v
 			from Vehicle v
+			left join fetch v.features f
 			where v.status = 1
 			and (:type is null or v.type = :type)
 			and (:maxKm is null or v.km <= :maxKm)
@@ -26,4 +27,19 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 			@Param("maxYear") Integer maxYear,
 			@Param("fuel") String fuel
 	);
+
+	@Query("""
+			select distinct v
+			from Vehicle v
+			left join fetch v.features f
+		""")
+	List<Vehicle> findAllWithFeatures();
+
+	@Query("""
+			select v
+			from Vehicle v
+			left join fetch v.features f
+			where v.id = :id
+		""")
+	Vehicle findByIdWithFeatures(@Param("id") Long id);
 }
