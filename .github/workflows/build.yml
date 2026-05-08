@@ -18,11 +18,6 @@ jobs:
         ports:
           - 5432:5432
 
-      artifactory:
-        image: releases-docker.jfrog.io/jfrog/artifactory-oss:latest
-        ports:
-          - 8081:8081
-
     steps:
       - uses: actions/checkout@v4
 
@@ -31,8 +26,11 @@ jobs:
           distribution: temurin
           java-version: 21
 
+      - name: Start Artifactory
+        run: docker run -d --name artifactory -p 8081:8081 releases-docker.jfrog.io/jfrog/artifactory-oss:latest
+
       - name: Wait for services
-        run: sleep 120
+        run: sleep 180
 
       - name: Create Maven settings
         run: |
@@ -42,8 +40,8 @@ jobs:
             <servers>
               <server>
                 <id>artifactory</id>
-                <username>gombi</username>
-                <password>jelszo</password>
+                <username>admin</username>
+                <password>password</password>
               </server>
             </servers>
           </settings>
