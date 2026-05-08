@@ -11,3 +11,4 @@ https://start.spring.io/ : innen lehet initelni egy csomagoltat, de ez a része 
 - docker-compose.yml fájl létrehozva
 - docker compose up -d : konténerek futnak
 - postgres18.2 hozzáadva, és Adminer is, ami 8080-as portra van kiengedve.
+- Adminer: Server: Postgres, Username/Password/Database: .env-ben, de lokálisan az, amit docker-composeban megadunk.
