@@ -9,6 +9,15 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
+      postgres:
+        image: postgres:18.2
+        env:
+          POSTGRES_DB: beadando
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+        ports:
+          - 5432:5432
+
       artifactory:
         image: releases-docker.jfrog.io/jfrog/artifactory-oss:latest
         ports:
@@ -22,8 +31,8 @@ jobs:
           distribution: temurin
           java-version: 25
 
-      - name: Wait for Artifactory
-        run: sleep 90
+      - name: Wait for services
+        run: sleep 120
 
       - name: Create Maven settings
         run: |
