@@ -1,13 +1,16 @@
-package com.progkorny.beadando.vehicle;
+package com.progkorny.beadando.web;
 
 import java.util.List;
 
+import com.progkorny.beadando.vehicle.Vehicle;
+import com.progkorny.beadando.vehicle.VehicleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+
 public class VehicleController {
 
     private final VehicleService vehicleService;

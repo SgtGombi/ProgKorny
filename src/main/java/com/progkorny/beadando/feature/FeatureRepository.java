@@ -1,4 +1,4 @@
-package com.progkorny.beadando.vehicle;
+package com.progkorny.beadando.feature;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
