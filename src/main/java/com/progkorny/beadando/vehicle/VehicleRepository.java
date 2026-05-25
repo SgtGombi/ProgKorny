@@ -7,9 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
-	List<Vehicle> findByStatus(Integer status);
-
-	List<Vehicle> findByStatusAndNameContainingIgnoreCase(Integer status, String name);
 
 	@Query("""
 			select distinct v
