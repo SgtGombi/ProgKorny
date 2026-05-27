@@ -114,7 +114,7 @@ public class DashboardController {
             Files.createDirectories(targetDir);
             imageFile.transferTo(targetDir.resolve(fileName));
         } catch (IOException ex) {
-            throw new IllegalStateException("Kep feltoltes sikertelen", ex);
+            throw new IllegalStateException("Képfeltöltés sikertelen", ex);
         }
 
         return "/images/" + fileName;

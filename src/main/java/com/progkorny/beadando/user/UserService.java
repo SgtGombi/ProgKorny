@@ -1,6 +1,8 @@
 package com.progkorny.beadando.user;
 
-import org.springframework.security.core.userdetails.*;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +16,13 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
+    // SpringSecurity intezi a logint es a logikat
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String cleanUsername = username.trim();
-        System.out.println("PRÓBA LOGIN: " + cleanUsername);
 
         User user = userRepository.findByUsername(cleanUsername)
                 .orElseThrow(() -> new UsernameNotFoundException(cleanUsername));
-
-        System.out.println("USER TALÁLVA " + user.getUsername());
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername().trim())
@@ -31,7 +30,7 @@ public class UserService implements UserDetailsService {
                 .roles(user.getRole().trim().replace("ROLE_", ""))
                 .build();
     }
-
+    // register folyamata, bcrypt, default user szerep
     public void register(String username, String rawPassword) {
         User user = new User();
         user.setUsername(username);
@@ -39,7 +38,7 @@ public class UserService implements UserDetailsService {
         user.setRole("ROLE_USER");
         userRepository.save(user);
     }
-
+    // letezik-e a user
     public boolean existsByUsername(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
