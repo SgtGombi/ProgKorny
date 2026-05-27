@@ -37,4 +37,9 @@ public class AuthController {
         userService.register(username, password);
         return "redirect:/login?registered";
     }
+
+    @GetMapping("/403")
+    public String accessDenied() {
+        return "403";
+    }
 }
