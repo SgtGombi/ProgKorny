@@ -92,7 +92,7 @@
             <!-- Logged in as ADMIN -->
             <span sec:authorize="hasRole('ADMIN')" sec:authentication="name" style="color:var(--muted)"></span>
             <a sec:authorize="hasRole('ADMIN')" href="/dashboard" class="cta">
-                <i class="fa-solid fa-list-check"></i> Extrák szerkesztése
+                <i class="fa-solid fa-list-check"></i> Irányítópult
             </a>
 
             <!-- Logout for anyone logged in -->
@@ -139,10 +139,10 @@
                     <legend><i class="fa-solid fa-gas-pump"></i> Üzemanyag típus</legend>
                     <div class="radio-group">
                         <label><input type="radio" name="fuel" value="" th:checked="${fuel == ''}" /> Mindegy</label>
-                        <label><input type="radio" name="fuel" value="benzin" th:checked="${fuel == 'benzin'}" /> benzin</label>
-                        <label><input type="radio" name="fuel" value="dízel" th:checked="${fuel == 'dízel'}" /> dízel</label>
-                        <label><input type="radio" name="fuel" value="elektromos" th:checked="${fuel == 'elektromos'}" /> elektromos</label>
-                        <label><input type="radio" name="fuel" value="lpg" th:checked="${fuel == 'lpg'}" /> lpg</label>
+                        <label><input type="radio" name="fuel" value="benzin" th:checked="${fuel == 'benzin'}" /> Benzin</label>
+                        <label><input type="radio" name="fuel" value="dízel" th:checked="${fuel == 'dízel'}" /> Dízel</label>
+                        <label><input type="radio" name="fuel" value="elektromos" th:checked="${fuel == 'elektromos'}" /> Elektromos</label>
+                        <label><input type="radio" name="fuel" value="lpg" th:checked="${fuel == 'lpg'}" /> LPG</label>
                     </div>
                 </fieldset>
                 <div>
