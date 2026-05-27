@@ -1,6 +1,5 @@
 package com.progkorny.beadando.web;
 
-import com.progkorny.beadando.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -8,6 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.progkorny.beadando.user.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register", "/images/**", "/css/**", "/error").permitAll()
                         .requestMatchers("/dashboard/**").hasRole("ADMIN")
-                        .requestMatchers("/my/**").authenticated()   // any logged-in user, not just ROLE_USER
+                        .requestMatchers("/vehicles/**").authenticated()   // any logged-in user, not just ROLE_USER
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

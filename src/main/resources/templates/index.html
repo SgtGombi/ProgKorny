@@ -115,9 +115,9 @@
     </div>
 
     <nav class="tabs">
-        <a class="tab" th:classappend="${type == 'GK'} ? ' active'" th:href="@{/(type=${'GK'},maxKm=${maxKm},maxYear=${maxYear},fuel=${fuel})}"><i class="fa-solid fa-car"></i> Személyautó</a>
-        <a class="tab" th:classappend="${type == 'TGK'} ? ' active'" th:href="@{/(type=${'TGK'},maxKm=${maxKm},maxYear=${maxYear},fuel=${fuel})}"><i class="fa-solid fa-truck"></i> Tehergépkocsi</a>
-        <a class="tab" th:classappend="${type == 'MOTOR'} ? ' active'" th:href="@{/(type=${'MOTOR'},maxKm=${maxKm},maxYear=${maxYear},fuel=${fuel})}"><i class="fa-solid fa-motorcycle"></i> Motor</a>
+        <a class="tab" th:classappend="${type == 'GK'} ? ' active'" th:href="${type == 'GK'} ? @{/(maxKm=${maxKm},maxYear=${maxYear},fuel=${fuel})} : @{/(type=${'GK'},maxKm=${maxKm},maxYear=${maxYear},fuel=${fuel})}"><i class="fa-solid fa-car"></i> Személyautó</a>
+        <a class="tab" th:classappend="${type == 'TGK'} ? ' active'" th:href="${type == 'TGK'} ? @{/(maxKm=${maxKm},maxYear=${maxYear},fuel=${fuel})} : @{/(type=${'TGK'},maxKm=${maxKm},maxYear=${maxYear},fuel=${fuel})}"><i class="fa-solid fa-truck"></i> Tehergépkocsi</a>
+        <a class="tab" th:classappend="${type == 'MOTOR'} ? ' active'" th:href="${type == 'MOTOR'} ? @{/(maxKm=${maxKm},maxYear=${maxYear},fuel=${fuel})} : @{/(type=${'MOTOR'},maxKm=${maxKm},maxYear=${maxYear},fuel=${fuel})}"><i class="fa-solid fa-motorcycle"></i> Motor</a>
     </nav>
 
     <form class="filter" method="get" action="/">

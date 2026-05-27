@@ -108,7 +108,7 @@ public class DashboardController {
         String extension = (original != null && original.contains("."))
                 ? original.substring(original.lastIndexOf('.')) : "";
         String fileName = UUID.randomUUID() + extension;
-        Path targetDir = Paths.get("src", "main", "resources", "static", "images");
+        Path targetDir = Paths.get("uploads", "images");
 
         try {
             Files.createDirectories(targetDir);
