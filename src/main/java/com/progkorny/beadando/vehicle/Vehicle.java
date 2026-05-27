@@ -1,6 +1,7 @@
 package com.progkorny.beadando.vehicle;
 
 import com.progkorny.beadando.feature.Feature;
+import com.progkorny.beadando.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -56,6 +57,10 @@ public class Vehicle {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User seller;
 
     @ManyToMany
     @JoinTable(
