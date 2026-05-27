@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Regisztráció</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        :root { --accent: #e60000; --border: #e3e8ef; --muted: #667085; }
+        body { margin: 0; font-family: Roboto, sans-serif; background: #f4f6f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 32px; width: 100%; max-width: 380px; box-shadow: 0 10px 24px rgba(31,41,51,.08); }
+        h1 { margin: 0 0 20px; font-size: 22px; }
+        label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 4px; }
+        input { width: 100%; box-sizing: border-box; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); font-size: 14px; margin-bottom: 14px; }
+        .btn { width: 100%; background: var(--accent); color: white; border: none; border-radius: 12px; padding: 12px; font-size: 15px; font-weight: 600; cursor: pointer; }
+        .error { color: #b91c1c; font-size: 13px; margin-bottom: 12px; }
+        .link { text-align: center; margin-top: 14px; font-size: 13px; color: var(--muted); }
+        .link a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Regisztráció</h1>
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+    <form method="post" action="/register">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <label>Felhasználónév</label>
+        <input type="text" name="username" required autofocus />
+        <label>Jelszó</label>
+        <input type="password" name="password" required />
+        <button class="btn" type="submit">Regisztráció</button>
+    </form>
+    <div class="link"><a href="/login">Már van fiókod? Jelentkezz be</a></div>
+</div>
+</body>
+</html>
