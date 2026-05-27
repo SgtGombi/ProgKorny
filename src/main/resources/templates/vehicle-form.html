@@ -24,8 +24,10 @@
 <div class="container">
     <div class="card">
         <h1>Hirdetés feladása</h1>
-        <form method="post" action="/my/vehicles/save" th:object="${vehicleForm}" enctype="multipart/form-data">
+        <form method="post" action="/vehicles/save" th:object="${vehicleForm}" enctype="multipart/form-data">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{imgUrl}" />
             <div class="grid">
                 <div><label>Név</label><input type="text" th:field="*{name}" required /></div>
                 <div><label>Márka</label><input type="text" th:field="*{brand}" required /></div>
@@ -39,7 +41,11 @@
                         <option value="MOTOR">MOTOR - Motor</option>
                     </select>
                 </div>
-                <div><label>Fotó</label><input type="file" name="imageFile" accept="image/*" /></div>
+                <div>
+                    <label>Fotó</label>
+                    <input type="file" name="imageFile" accept="image/*" />
+                    <img th:if="*{imgUrl}" th:src="*{imgUrl}" alt="Jarmu foto" style="margin-top:8px; max-width:160px; border-radius:8px; border:1px solid var(--border);" />
+                </div>
                 <div><label>Futás (km)</label><input type="number" th:field="*{km}" required /></div>
                 <div><label>Évjárat</label><input type="number" th:field="*{yearOfManufacture}" required /></div>
                 <div><label>Szín</label><input type="text" th:field="*{color}" required /></div>
