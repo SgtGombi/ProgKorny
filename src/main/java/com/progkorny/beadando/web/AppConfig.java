@@ -15,6 +15,7 @@ public class AppConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
+    // image lag/statik kep miatt resource handler hozzaadva
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**")

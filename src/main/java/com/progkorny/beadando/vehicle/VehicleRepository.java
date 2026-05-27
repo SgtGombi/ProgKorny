@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
-
+	// filter a kereseshez
 	@Query("""
 			select distinct v
 			from Vehicle v
@@ -24,14 +24,14 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 			@Param("maxYear") Integer maxYear,
 			@Param("fuel") String fuel
 	);
-
+	// minden auto lekerdezese featurekkel egyutt
 	@Query("""
 			select distinct v
 			from Vehicle v
 			left join fetch v.features f
 		""")
 	List<Vehicle> findAllWithFeatures();
-
+    // lekerdezes ID alapjan
 	@Query("""
 			select v
 			from Vehicle v

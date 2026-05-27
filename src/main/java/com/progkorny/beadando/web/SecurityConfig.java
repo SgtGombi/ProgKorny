@@ -20,7 +20,7 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder);
         return provider;
     }
-
+    // routeok, mi kinek hogyan erheto el, login/logout kezelese
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, DaoAuthenticationProvider authProvider) throws Exception {
 
