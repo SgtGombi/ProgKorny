@@ -40,26 +40,19 @@ public class DashboardController {
         return "vehicle-form";
     }
 
-    @GetMapping("/dashboard/vehicles/{id}/edit")
-    public String editVehicle(@PathVariable Long id, Model model) {
-        Vehicle vehicle = vehicleService.getByIdWithFeatures(id);
-        Set<Long> ids = new HashSet<>();
-        for (Feature f : vehicle.getFeatures()) ids.add(f.getId());
-        vehicle.setFeatureIds(ids);
-        model.addAttribute("vehicleForm", vehicle);
-        model.addAttribute("features", vehicleService.getAllFeatures());
-        return "vehicle-form";
-    }
 
     @PostMapping("/dashboard/vehicles/save")
     public String saveVehicle(Vehicle vehicle,
                               @RequestParam(name = "imageFile", required = false) MultipartFile imageFile) {
+
         if (vehicle.getId() != null && (imageFile == null || imageFile.isEmpty())) {
             vehicleService.getById(vehicle.getId())
                     .ifPresent(existing -> vehicle.setImgUrl(existing.getImgUrl()));
+
         } else {
             vehicle.setImgUrl(resolveImageUrl(vehicle.getImgUrl(), imageFile));
         }
+
         Set<Long> featureIds = vehicle.getFeatureIds() == null ? new HashSet<>() : vehicle.getFeatureIds();
         List<Feature> selected = vehicleService.getFeaturesByIds(featureIds);
         vehicle.setFeatures(new HashSet<>(selected));
