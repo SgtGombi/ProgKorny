@@ -1,16 +1,5 @@
 package com.progkorny.beadando.web;
 
-import com.progkorny.beadando.feature.Feature;
-import com.progkorny.beadando.user.User;
-import com.progkorny.beadando.user.UserRepository;
-import com.progkorny.beadando.vehicle.Vehicle;
-import com.progkorny.beadando.vehicle.VehicleService;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,14 +9,29 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.progkorny.beadando.feature.Feature;
+import com.progkorny.beadando.user.User;
+import com.progkorny.beadando.user.UserRepository;
+import com.progkorny.beadando.vehicle.Vehicle;
+import com.progkorny.beadando.vehicle.VehicleService;
+
 @Controller
-@RequestMapping("/my")
-public class MyVehicleController {
+@RequestMapping("/")
+public class UserVehicleController {
 
     private final VehicleService vehicleService;
     private final UserRepository userRepository;
 
-    public MyVehicleController(VehicleService vehicleService, UserRepository userRepository) {
+    public UserVehicleController(VehicleService vehicleService, UserRepository userRepository) {
         this.vehicleService = vehicleService;
         this.userRepository = userRepository;
     }
@@ -36,7 +40,7 @@ public class MyVehicleController {
     public String newVehicle(Model model) {
         model.addAttribute("vehicleForm", new Vehicle());
         model.addAttribute("features", vehicleService.getAllFeatures());
-        return "my-vehicle-form";
+        return "vehicle-form";
     }
 
     @PostMapping("/vehicles/save")
