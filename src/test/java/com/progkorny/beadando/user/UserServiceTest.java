@@ -32,7 +32,7 @@ class UserServiceTest {
 
     private User testUser;
 
-    // Alap tesztfelhasználó létrehozása minden teszt előtt
+    // Alap tesztfelhasználó létrehozása minden teszt előtt, a
     @BeforeEach
     void setUp() {
         testUser = new User();
@@ -42,7 +42,7 @@ class UserServiceTest {
         testUser.setRole("ROLE_USER");
     }
 
-    // Ellenőrzi, hogy létező felhasználó esetén UserDetails-t ad vissza
+    // ha van felhasználó -> adjon userdetails
     @Test
     void shouldLoadExistingUserAsUserDetails() {
         when(userRepository.findByUsername("tesztuser")).thenReturn(Optional.of(testUser));
@@ -53,7 +53,7 @@ class UserServiceTest {
         assertThat(result.getAuthorities()).anyMatch(a -> a.getAuthority().equals("ROLE_USER"));
     }
 
-    // Ellenőrzi, hogy nem létező felhasználó esetén kivétel keletkezik
+    // Nem létező felhasználó legyen kivétel
     @Test
     void shouldThrowException_whenUserNotFound() {
         when(userRepository.findByUsername("nemletezik")).thenReturn(Optional.empty());
@@ -62,7 +62,7 @@ class UserServiceTest {
                 .isInstanceOf(UsernameNotFoundException.class);
     }
 
-    // Ellenőrzi, hogy az admin szerepkör helyesen kerül betöltésre
+    // Megnézi hogy tényleg az admin szerepkör kerül e betöltésre
     @Test
     void shouldLoadAdminUserWithAdminRole() {
         testUser.setRole("ROLE_ADMIN");
@@ -75,7 +75,7 @@ class UserServiceTest {
         assertThat(result.getAuthorities()).anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
     }
 
-    // Ellenőrzi, hogy a regisztráció bcrypt titkosítással menti a jelszót
+    // Csekkol hogy tényleg Bcrypt e
     @Test
     void shouldRegisterNewUserWithEncodedPassword() {
         when(passwordEncoder.encode("jelszo123")).thenReturn("$2a$10$hashed");
@@ -90,7 +90,7 @@ class UserServiceTest {
         ));
     }
 
-    // Ellenőrzi, hogy létező felhasználónév esetén true-t ad vissza
+    // Létező felhasználónév esetén true-t ad vissza
     @Test
     void shouldReturnTrue_whenUsernameExists() {
         when(userRepository.findByUsername("tesztuser")).thenReturn(Optional.of(testUser));
@@ -100,7 +100,7 @@ class UserServiceTest {
         assertThat(result).isTrue();
     }
 
-    // Ellenőrzi, hogy nem létező felhasználónév esetén false-t ad vissza
+    // Ellenőrzi nem létező felh. esetén false-t ad vissza
     @Test
     void shouldReturnFalse_whenUsernameDoesNotExist() {
         when(userRepository.findByUsername("senki")).thenReturn(Optional.empty());
@@ -110,7 +110,7 @@ class UserServiceTest {
         assertThat(result).isFalse();
     }
 
-    // Ellenőrzi, hogy a felhasználónévből levágja a szóközöket bejelentkezéskor
+    // Ellenőrz hogy a felhasználónévből levágja e a szóközöket bejelentkezéskor
     @Test
     void shouldTrimWhitespaceFromUsername() {
         when(userRepository.findByUsername("tesztuser")).thenReturn(Optional.of(testUser));

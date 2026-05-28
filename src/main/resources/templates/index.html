@@ -171,6 +171,7 @@
                         <span><i class="fa-solid fa-gas-pump"></i> Üzemanyag: <strong th:text="${vehicle.fuel}">dízel</strong></span>
                         <span><i class="fa-solid fa-palette"></i> Szín: <strong th:text="${vehicle.color}">fekete</strong></span>
                         <span><i class="fa-solid fa-wrench"></i> Állapot: <strong th:text="${vehicle.conditionStatus}">használt</strong></span>
+                        <span><i class="fa-solid fa-circle-dollar-to-slot"></i> Ár: <strong th:text="${vehicle.price} + ' Ft'">0 Ft</strong></span>
                     </div>
                     <p class="description" th:text="${vehicle.description}">Leírás</p>
                     <p class="seller" th:if="${vehicle.seller != null}">

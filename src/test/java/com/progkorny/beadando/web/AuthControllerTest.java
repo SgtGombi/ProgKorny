@@ -17,16 +17,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * AuthController végpontjainak tesztjei MockMvc segítségével.
 
- * Spring Boot 4-ben a @WebMvcTest csomag helye megváltozott:
- *   org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest*
- * A SecurityConfig-ot explicit @Import-tal kell behúzni, mert a @WebMvcTest
- * alapból nem tölti be az egyedi @Configuration osztályokat.
- * A SecurityConfig függ a UserService-től és a PasswordEncoder-től,
- * ezért mindkettőt @MockitoBean-nel kell pótolni.
- */
+ //A SecurityConfig-ot explicit @Import-tal kell behúzni, mert a @WebMvcTest
+ // alapból nem tölti be az egyedi @Configuration osztályokat.
+ //
+ //A SecurityConfig függ a UserService-től és a PasswordEncoder-től,
+ // ezért mindkettőt @MockitoBean-nel kell pótolni.
+
 @WebMvcTest(AuthController.class)
 @Import({SecurityConfig.class, AppConfig.class})
 class AuthControllerTest {
@@ -42,29 +39,19 @@ class AuthControllerTest {
     @MockitoBean
     private PasswordEncoder passwordEncoder;
 
-    // -------------------------------------------------------------------------
-    // GET /login
-    // -------------------------------------------------------------------------
 
-    /**
-     * A login oldal bejelentkezés nélkül is elérhető,
-     * és a "login" nevű template-et adja vissza.
-     */
+
+   //loginhoz nem kell bejelentkezés, és megfelelő tempaltet ad vissza
     @Test
     void shouldReturnLoginView() throws Exception {
         mockMvc.perform(get("/login"))
-                .andExpect(status().isOk())
+                .andExpect(status().isOk()) // HTTP 200 ok , van acess
                 .andExpect(view().name("login"));
     }
 
-    // -------------------------------------------------------------------------
-    // GET /register
-    // -------------------------------------------------------------------------
 
-    /**
-     * A regisztrációs oldal szintén nyilvánosan elérhető,
-     * és a "register" template-et rendereli.
-     */
+     //A regisztrációs oldal szintén nyilvánosan elérhető,
+     //és a "register" template-et rendereli.
     @Test
     void shouldReturnRegisterView() throws Exception {
         mockMvc.perform(get("/register"))
@@ -72,14 +59,8 @@ class AuthControllerTest {
                 .andExpect(view().name("register"));
     }
 
-    // -------------------------------------------------------------------------
-    // POST /register – sikeres eset
-    // -------------------------------------------------------------------------
 
-    /**
-     * Ha a felhasználónév szabad, regisztráció után átirányít a login oldalra
-     * a "?registered" paraméterrel.
-     */
+    //ha registered , akkor átrányít a loginre
     @Test
     void shouldRedirectToLoginAfterSuccessfulRegistration() throws Exception {
         when(userService.existsByUsername("ujuser")).thenReturn(false);
@@ -93,14 +74,10 @@ class AuthControllerTest {
                 .andExpect(redirectedUrl("/login?registered"));
     }
 
-    // -------------------------------------------------------------------------
-    // POST /register – foglalt felhasználónév
-    // -------------------------------------------------------------------------
 
-    /**
-     * Ha a felhasználónév már foglalt, a szerver visszaküldi a register oldalt
-     * és az "error" modell attribútum jelen van.
-     */
+
+     //Ha a felhasználónév már foglalt, a szerver visszaküldi a register oldalt
+     //és az "error" modell attribútum jelen van.
     @Test
     void shouldShowErrorWhenUsernameAlreadyExists() throws Exception {
         when(userService.existsByUsername("letezousr")).thenReturn(true);

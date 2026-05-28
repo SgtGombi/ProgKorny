@@ -1,5 +1,6 @@
 package com.progkorny.beadando.user;
 
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
@@ -9,17 +10,11 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * UserRepository integrációs tesztjei.
- *
- * Spring Boot 4-ben a @DataJpaTest csomag helye megváltozott:
- *   org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
- *
- * A @DataJpaTest H2 in-memory adatbázist indít a tesztekhez.
- * A Flyway migrációk ki vannak kapcsolva (test application.properties alapján).
- * A JPA/Hibernate automatikusan létrehozza a táblákat a @Entity osztályokból.
- * Minden teszt tranzakcióban fut és rollback-kel zárul.
- */
+
+//A @DataJpaTest H2 in-memory adatbázist indít a tesztekhez.
+ //A Flyway migrációk ki vannak kapcsolva (test application.properties alapján).//
+// // Hibernate automatikusan létrehozza a táblákat a @Entity osztályokból.
+
 @DataJpaTest
 @ActiveProfiles("test")
 class UserRepositoryTest {
@@ -36,13 +31,8 @@ class UserRepositoryTest {
         return userRepository.save(user);
     }
 
-    // -------------------------------------------------------------------------
-    // findByUsername – létező felhasználó
-    // -------------------------------------------------------------------------
 
-    /**
-     * Ha a felhasználó létezik az adatbázisban, findByUsername megtalálja és visszaadja.
-     */
+  // ha username létezik, a findByusername megtalálja és visszaadja
     @Test
     void shouldFindExistingUserByUsername() {
         saveTestUser("pelda_user", "ROLE_USER");
@@ -57,9 +47,7 @@ class UserRepositoryTest {
     // findByUsername – nem létező felhasználó
     // -------------------------------------------------------------------------
 
-    /**
-     * Ha a felhasználó nem létezik, findByUsername üres Optional-t ad vissza.
-     */
+    //Ha a felhasználó nem létezik, findByUsername üres Optional-t ad vissza.
     @Test
     void shouldReturnEmpty_whenUserDoesNotExist() {
         Optional<User> result = userRepository.findByUsername("senki");
@@ -67,13 +55,8 @@ class UserRepositoryTest {
         assertThat(result).isEmpty();
     }
 
-    // -------------------------------------------------------------------------
-    // findByUsername – több felhasználó között a helyes kerül vissza
-    // -------------------------------------------------------------------------
 
-    /**
-     * Több felhasználó esetén csak a kért felhasználónevet adja vissza.
-     */
+    //több felhasználó esetén adja azt amelyiket kérjük
     @Test
     void shouldReturnCorrectUser_whenMultipleUsersExist() {
         saveTestUser("elso_user", "ROLE_USER");
@@ -85,13 +68,9 @@ class UserRepositoryTest {
         assertThat(result.get().getUsername()).isEqualTo("masodik_user");
     }
 
-    // -------------------------------------------------------------------------
-    // save – mentés után ID kap értéket
-    // -------------------------------------------------------------------------
 
-    /**
-     * Mentés után a felhasználó kap egy generált ID-t (nem null).
-     */
+    //
+    // Mentés után a felhasználó kap egy generált ID-t (nem null).
     @Test
     void shouldAssignIdAfterSave() {
         User user = saveTestUser("id_teszt", "ROLE_USER");
@@ -99,13 +78,8 @@ class UserRepositoryTest {
         assertThat(user.getId()).isNotNull();
     }
 
-    // -------------------------------------------------------------------------
-    // save – admin szerepkör is elmenthető
-    // -------------------------------------------------------------------------
 
-    /**
-     * ROLE_ADMIN szerepkörű felhasználó is menthető és visszakereshető.
-     */
+    // ROLE_ADMIN  felhasználó is menthető és visszakereshető.
     @Test
     void shouldSaveAdminRoleUser() {
         saveTestUser("admin_user", "ROLE_ADMIN");
@@ -116,13 +90,8 @@ class UserRepositoryTest {
         assertThat(result.get().getRole()).isEqualTo("ROLE_ADMIN");
     }
 
-    // -------------------------------------------------------------------------
-    // deleteById – törlés után nem található
-    // -------------------------------------------------------------------------
 
-    /**
-     * deleteById után a felhasználó eltűnik az adatbázisból.
-     */
+    // deleteById tényleg töröl
     @Test
     void shouldDeleteUserById() {
         User user = saveTestUser("torlendo_user", "ROLE_USER");

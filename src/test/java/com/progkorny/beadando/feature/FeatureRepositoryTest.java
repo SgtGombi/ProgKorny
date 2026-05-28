@@ -10,15 +10,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * FeatureRepository alap CRUD tesztjei.
- *
- * Spring Boot 4-ben a @DataJpaTest csomag helye megváltozott:
- *   org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
- *
- * H2 in-memory adatbázist használ, Flyway le van tiltva (test application.properties).
- * Minden teszt saját tranzakcióban fut és rollback-kel zárul.
- */
+
 @DataJpaTest
 @ActiveProfiles("test")
 class FeatureRepositoryTest {
@@ -33,13 +25,8 @@ class FeatureRepositoryTest {
         return featureRepository.save(feature);
     }
 
-    // -------------------------------------------------------------------------
-    // save – mentés és ID kiosztás
-    // -------------------------------------------------------------------------
 
-    /**
-     * Mentett Feature generált ID-t kap – nem null és pozitív.
-     */
+    // Mentett Feature generált ID-t kap – nem null és pozitív
     @Test
     void shouldAssignIdAfterSave() {
         Feature feature = saveFeature("Klíma");
@@ -65,13 +52,8 @@ class FeatureRepositoryTest {
         assertThat(result.get().getName()).isEqualTo("ABS");
     }
 
-    // -------------------------------------------------------------------------
-    // findById – nem létező ID
-    // -------------------------------------------------------------------------
 
-    /**
-     * Nem létező ID esetén findById üres Optional-t ad vissza.
-     */
+    //Nem létező ID esetén findById üres Optional-t ad vissza.
     @Test
     void shouldReturnEmpty_whenFeatureNotFound() {
         Optional<Feature> result = featureRepository.findById(9999L);
@@ -79,13 +61,7 @@ class FeatureRepositoryTest {
         assertThat(result).isEmpty();
     }
 
-    // -------------------------------------------------------------------------
-    // findAll – összes elem lekérése
-    // -------------------------------------------------------------------------
-
-    /**
-     * findAll visszaadja az összes mentett Feature-t.
-     */
+    //visszaadja az összes mentett featuret
     @Test
     void shouldReturnAllFeatures() {
         saveFeature("Tempomat");
@@ -97,13 +73,8 @@ class FeatureRepositoryTest {
         assertThat(all).hasSizeGreaterThanOrEqualTo(3);
     }
 
-    // -------------------------------------------------------------------------
-    // deleteById – törlés után nem elérhető
-    // -------------------------------------------------------------------------
+    //deleteById után az elem nem található findById-dal sem.
 
-    /**
-     * deleteById után az elem nem található findById-dal sem.
-     */
     @Test
     void shouldDeleteFeatureById() {
         Feature feature = saveFeature("Panoramateto");
@@ -114,14 +85,9 @@ class FeatureRepositoryTest {
         assertThat(featureRepository.findById(id)).isEmpty();
     }
 
-    // -------------------------------------------------------------------------
-    // findAllById – több ID alapján lekérés
-    // -------------------------------------------------------------------------
 
-    /**
-     * findAllById egyszerre több ID alapján adja vissza a Feature-öket.
-     * Ezt a VehicleService is használja feature-lista összeállításhoz.
-     */
+    //findAllById egyszerre több ID alapján adja vissza a Featureöket.
+    // Ezt a VehicleService is használja feature éist összeállításho.
     @Test
     void shouldFindAllByIds() {
         Feature f1 = saveFeature("Vonóhorog");
