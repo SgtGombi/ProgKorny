@@ -52,7 +52,7 @@ class VehicleServiceTest {
 
     // Ellenőrzi, hogy az aktív járművek lekérése meghívja a repository-t
     @Test
-    void getActiveVehicles_visszaadjaAzAktivJarmuveket() {
+    void shouldReturnActiveVehicles() {
         when(vehicleRepository.findActiveByFilters(null, null, null, null))
                 .thenReturn(List.of(testVehicle));
 
@@ -65,7 +65,7 @@ class VehicleServiceTest {
 
     // Ellenőrzi, hogy üres/null szűrők null-ra normalizálódnak
     @Test
-    void getActiveVehicles_uresSzuroNullraAlakul() {
+    void shouldNormalizeEmptyFiltersToNull() {
         when(vehicleRepository.findActiveByFilters(null, null, null, null))
                 .thenReturn(List.of());
 
@@ -78,7 +78,7 @@ class VehicleServiceTest {
 
     // Ellenőrzi, hogy típus és üzemanyag szűrők helyesen átadódnak
     @Test
-    void getActiveVehicles_szurokelAtadva() {
+    void shouldPassFiltersCorrectly() {
         when(vehicleRepository.findActiveByFilters("GK", 100000, 2022, "benzin"))
                 .thenReturn(List.of(testVehicle));
 
@@ -90,7 +90,7 @@ class VehicleServiceTest {
 
     // Ellenőrzi az összes jármű (extrakkkal együtt) lekérését
     @Test
-    void getAllWithFeatures_visszaadjaAzOsszesJarmuveket() {
+    void shouldReturnAllVehiclesWithFeatures() {
         when(vehicleRepository.findAllWithFeatures()).thenReturn(List.of(testVehicle));
 
         List<Vehicle> result = vehicleService.getAllWithFeatures();
@@ -101,7 +101,7 @@ class VehicleServiceTest {
 
     // Ellenőrzi az ID alapú keresést
     @Test
-    void getById_letezoBejegyzes_visszaadja() {
+    void shouldReturnVehicleById_whenExists() {
         when(vehicleRepository.findById(1L)).thenReturn(Optional.of(testVehicle));
 
         Optional<Vehicle> result = vehicleService.getById(1L);
@@ -112,7 +112,7 @@ class VehicleServiceTest {
 
     // Ellenőrzi, hogy nem létező ID esetén üres Optional jön vissza
     @Test
-    void getById_nemLetezoBejegyzes_uresOptional() {
+    void shouldReturnEmpty_whenVehicleNotFound() {
         when(vehicleRepository.findById(99L)).thenReturn(Optional.empty());
 
         Optional<Vehicle> result = vehicleService.getById(99L);
@@ -122,7 +122,7 @@ class VehicleServiceTest {
 
     // Ellenőrzi a mentés helyes működését
     @Test
-    void save_elmentAzAdatbazisba() {
+    void shouldSaveVehicle() {
         when(vehicleRepository.save(testVehicle)).thenReturn(testVehicle);
 
         Vehicle result = vehicleService.save(testVehicle);
@@ -133,14 +133,14 @@ class VehicleServiceTest {
 
     // Ellenőrzi a törlés meghívását
     @Test
-    void deleteById_torlesHivasa() {
+    void shouldDeleteVehicleById() {
         vehicleService.deleteById(1L);
         verify(vehicleRepository).deleteById(1L);
     }
 
     // Ellenőrzi az összes extra lekérését
     @Test
-    void getAllFeatures_visszaadjaAzOsszesExtrat() {
+    void shouldReturnAllFeatures() {
         when(featureRepository.findAll()).thenReturn(List.of(testFeature));
 
         List<Feature> result = vehicleService.getAllFeatures();
@@ -151,7 +151,7 @@ class VehicleServiceTest {
 
     // Ellenőrzi az extra ID alapú keresését
     @Test
-    void getFeatureById_letezoBejegyzes_visszaadja() {
+    void shouldReturnFeatureById_whenExists() {
         when(featureRepository.findById(1L)).thenReturn(Optional.of(testFeature));
 
         Optional<Feature> result = vehicleService.getFeatureById(1L);
@@ -162,7 +162,7 @@ class VehicleServiceTest {
 
     // Ellenőrzi az ID-lista alapú extra lekérést
     @Test
-    void getFeaturesByIds_visszaadjaAKijeloltExtrak() {
+    void shouldReturnFeaturesByIds() {
         when(featureRepository.findAllById(Set.of(1L))).thenReturn(List.of(testFeature));
 
         List<Feature> result = vehicleService.getFeaturesByIds(Set.of(1L));
@@ -172,7 +172,7 @@ class VehicleServiceTest {
 
     // Ellenőrzi az extra mentését
     @Test
-    void saveFeature_elmentAzAdatbazisba() {
+    void shouldSaveFeature() {
         when(featureRepository.save(testFeature)).thenReturn(testFeature);
 
         Feature result = vehicleService.saveFeature(testFeature);
@@ -183,7 +183,7 @@ class VehicleServiceTest {
 
     // Ellenőrzi az extra törlésének meghívását
     @Test
-    void deleteFeatureById_torlesHivasa() {
+    void shouldDeleteFeatureById() {
         vehicleService.deleteFeatureById(1L);
         verify(featureRepository).deleteById(1L);
     }

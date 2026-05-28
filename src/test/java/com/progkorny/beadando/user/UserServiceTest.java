@@ -14,10 +14,10 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 // A UserService unit tesztjei Mockito segítségével
+// https://www.baeldung.com/spring-mockmvc-vs-webmvctest
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
@@ -44,7 +44,7 @@ class UserServiceTest {
 
     // Ellenőrzi, hogy létező felhasználó esetén UserDetails-t ad vissza
     @Test
-    void loadUserByUsername_letezoPelhasznalo_visszaadjaUserDetails() {
+    void shouldLoadExistingUserAsUserDetails() {
         when(userRepository.findByUsername("tesztuser")).thenReturn(Optional.of(testUser));
 
         UserDetails result = userService.loadUserByUsername("tesztuser");
@@ -55,7 +55,7 @@ class UserServiceTest {
 
     // Ellenőrzi, hogy nem létező felhasználó esetén kivétel keletkezik
     @Test
-    void loadUserByUsername_nemLetezo_kiveteltDob() {
+    void shouldThrowException_whenUserNotFound() {
         when(userRepository.findByUsername("nemletezik")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.loadUserByUsername("nemletezik"))
@@ -64,10 +64,11 @@ class UserServiceTest {
 
     // Ellenőrzi, hogy az admin szerepkör helyesen kerül betöltésre
     @Test
-    void loadUserByUsername_adminFelhasznalo_adminSzerepkor() {
+    void shouldLoadAdminUserWithAdminRole() {
         testUser.setRole("ROLE_ADMIN");
-        when(userRepository.findByUsername("admin")).thenReturn(Optional.of(testUser));
         testUser.setUsername("admin");
+
+        when(userRepository.findByUsername("admin")).thenReturn(Optional.of(testUser));
 
         UserDetails result = userService.loadUserByUsername("admin");
 
@@ -76,7 +77,7 @@ class UserServiceTest {
 
     // Ellenőrzi, hogy a regisztráció bcrypt titkosítással menti a jelszót
     @Test
-    void register_ujFelhasznaloMentese() {
+    void shouldRegisterNewUserWithEncodedPassword() {
         when(passwordEncoder.encode("jelszo123")).thenReturn("$2a$10$hashed");
 
         userService.register("ujuser", "jelszo123");
@@ -91,7 +92,7 @@ class UserServiceTest {
 
     // Ellenőrzi, hogy létező felhasználónév esetén true-t ad vissza
     @Test
-    void existsByUsername_letezik_igaz() {
+    void shouldReturnTrue_whenUsernameExists() {
         when(userRepository.findByUsername("tesztuser")).thenReturn(Optional.of(testUser));
 
         boolean result = userService.existsByUsername("tesztuser");
@@ -101,7 +102,7 @@ class UserServiceTest {
 
     // Ellenőrzi, hogy nem létező felhasználónév esetén false-t ad vissza
     @Test
-    void existsByUsername_nemLetezik_hamis() {
+    void shouldReturnFalse_whenUsernameDoesNotExist() {
         when(userRepository.findByUsername("senki")).thenReturn(Optional.empty());
 
         boolean result = userService.existsByUsername("senki");
@@ -111,7 +112,7 @@ class UserServiceTest {
 
     // Ellenőrzi, hogy a felhasználónévből levágja a szóközöket bejelentkezéskor
     @Test
-    void loadUserByUsername_szokozokLevagas() {
+    void shouldTrimWhitespaceFromUsername() {
         when(userRepository.findByUsername("tesztuser")).thenReturn(Optional.of(testUser));
 
         // Szóközzel adják meg a felhasználónevet - le kell vágni
